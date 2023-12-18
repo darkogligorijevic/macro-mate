@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream>
 #include <map>
+#include <thread>
 
 #define PIPE_NAME "\\\\.\\pipe\\my_named_pipe"
 #define BUFFER_SIZE 1024
@@ -70,7 +71,6 @@ void simulateThreeKeyPresses(WORD key1, WORD key2, WORD key3) {
 }
 
 void executeKeyPress(const std::string& command) {
-
     WORD key1;
     WORD key2;
     WORD key3;
@@ -213,56 +213,66 @@ void executeKeyPress(const std::string& command) {
         simulateThreeKeyPresses(key1, key2, key3);
     }
 
+}
 
-    // Output
-    std::cout << "String one: " << strOne << std::endl;
-    std::cout << "String two: " << strTwo << std::endl;
-    std::cout << "String three: " << strThree << std::endl;
-
+void releaseAllKeyPresses() {
+        for (int key = 0; key < 256; ++key) {
+        INPUT input;
+        input.type = INPUT_KEYBOARD;
+        input.ki.wVk = key;
+        input.ki.dwFlags = KEYEVENTF_KEYUP;
+        SendInput(1, &input, sizeof(INPUT));
+    }
 }
 
 void processCommand(const std::string& command) {
     std::cout << "Received command: " << command << std::endl;
-    executeKeyPress(command);
+
+    // Capture 'command' by value in the lambda capture list
+    std::thread keyPressThread([command] {
+        executeKeyPress(command);
+        releaseAllKeyPresses();
+    });
+
+    // Wait for the keyPressThread to finish
+    keyPressThread.join();
 }
 
 int main() {
 
-    executeKeyPress("CTRL+LWIN+F");
+    HANDLE pipeHandle;
+    char buffer[BUFFER_SIZE];
+    DWORD bytesRead;
 
-    // HANDLE pipeHandle;
-    // char buffer[BUFFER_SIZE];
-    // DWORD bytesRead;
+    pipeHandle = CreateNamedPipe(
+        TEXT(PIPE_NAME),  // Adjust the pipe name as needed
+        PIPE_ACCESS_INBOUND | PIPE_ACCESS_OUTBOUND,  // Bidirectional
+        PIPE_TYPE_MESSAGE | PIPE_READMODE_MESSAGE | PIPE_WAIT,
+        1,
+        0,
+        0,
+        NMPWAIT_USE_DEFAULT_WAIT,
+        nullptr
+    );
 
-    // pipeHandle = CreateNamedPipe(
-    //     TEXT(PIPE_NAME),  // Adjust the pipe name as needed
-    //     PIPE_ACCESS_INBOUND | PIPE_ACCESS_OUTBOUND,  // Bidirectional
-    //     PIPE_TYPE_MESSAGE | PIPE_READMODE_MESSAGE | PIPE_WAIT,
-    //     1,
-    //     0,
-    //     0,
-    //     NMPWAIT_USE_DEFAULT_WAIT,
-    //     nullptr
-    // );
+    if (pipeHandle == INVALID_HANDLE_VALUE) {
+        std::cerr << "Error creating named pipe\n";
+        return -1;
+    }
 
-    // if (pipeHandle == INVALID_HANDLE_VALUE) {
-    //     std::cerr << "Error creating named pipe\n";
-    //     return -1;
-    // }
+    std::cout << "C++ Server waiting for connection\n";
 
-    // std::cout << "C++ Server waiting for connection\n";
+    while (ConnectNamedPipe(pipeHandle, nullptr)) {
+        while (ReadFile(pipeHandle, buffer, sizeof(buffer), &bytesRead, nullptr) && bytesRead > 0) {
+            buffer[bytesRead] = '\0';
+            std::string receivedCommand(buffer);
+            processCommand(receivedCommand);
+        }
+        // Disconnect from the client to allow another connection
+        DisconnectNamedPipe(pipeHandle);
+    }
 
-    // while (ConnectNamedPipe(pipeHandle, nullptr)) {
-    //     while (ReadFile(pipeHandle, buffer, sizeof(buffer), &bytesRead, nullptr) && bytesRead > 0) {
-    //         buffer[bytesRead] = '\0';
-    //         std::string receivedCommand(buffer);
-    //         processCommand(receivedCommand);
-    //     }
-    //     // Disconnect from the client to allow another connection
-    //     DisconnectNamedPipe(pipeHandle);
-    // }
-
-    // CloseHandle(pipeHandle);
+    CloseHandle(pipeHandle);
 
     return 0;
 }

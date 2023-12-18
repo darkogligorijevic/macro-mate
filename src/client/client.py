@@ -10,7 +10,7 @@ PIPE_CLIENT = str(os.getenv("PIPE_CLIENT"))
 IP = socket.gethostbyname(socket.gethostname())
 
 def send_command_to_cpp(command):
-    pipe_name = PIPE_CLIENT
+    pipe_name = r'\\.\pipe\my_named_pipe'
 
     try:
         pipe_handle = win32file.CreateFile(
