@@ -6,8 +6,11 @@
 #include <sstream>
 #include <map>
 #include <thread>
+#include <codecvt>
+#include <locale>
+#include <filesystem>
+#include "pipe_name.h"
 
-#define PIPE_NAME "\\\\.\\pipe\\my_named_pipe"
 #define BUFFER_SIZE 1024
 
 void simulateKeyPress(WORD key) {
@@ -70,11 +73,12 @@ void simulateThreeKeyPresses(WORD key1, WORD key2, WORD key3) {
     SendInput(4, input, sizeof(INPUT));
 }
 
-void executeKeyPress(const std::string& command) {
-    WORD key1;
-    WORD key2;
-    WORD key3;
+WORD getVirtualKeyCode(const std::map<std::string, WORD>& keyMap, const std::string& keyString) {
+    auto it = keyMap.find(keyString);
+    return (it != keyMap.end()) ? it->second : 0;
+}
 
+void executeKeyPress(const std::string& command) {
     std::map<std::string, WORD> keyMap = {
         {"CTRL", VK_CONTROL},
         {"SHIFT", VK_SHIFT},
@@ -155,64 +159,28 @@ void executeKeyPress(const std::string& command) {
         tokens.push_back(token);
     }
 
-    
+    std::vector<WORD> keyCodes;
 
-    // Extracting individual strings
-    std::string strOne, strTwo, strThree;
-    if (tokens.size() >= 1) {
-        strOne = tokens[0];
-    }
-    if (tokens.size() >= 2) {
-        strTwo = tokens[1];
-    }
-    if (tokens.size() >= 3) {
-        strThree = tokens[2];
+    for (const auto& token : tokens) {
+        WORD keyCode = getVirtualKeyCode(keyMap, token);
+        if (keyCode != 0) {
+            keyCodes.push_back(keyCode);
+            std::cout << keyCode << std::endl;
+        } else {
+            std::cout << "Key not found in the map." << std::endl;
+            return; 
+        }
     }
 
-    auto it1 = keyMap.find(strOne);
-    if (it1 != keyMap.end()) {
-        // If the input exists, retrieve the corresponding value (VK* constant)
-        key1 = it1->second;
-        std::cout << key1 << std::endl;
-
-        // Call your function with the retrieved value as an argument
+    if (keyCodes.empty()) {
+        std::cout << "No valid input" << std::endl;
+    } else if (keyCodes.size() == 1) {
+        simulateKeyPress(keyCodes[0]);
+    } else if (keyCodes.size() == 2) {
+        simulateTwoKeyPresses(keyCodes[0], keyCodes[1]);
     } else {
-        std::cout << "Key not found in the map." << std::endl;
+        simulateThreeKeyPresses(keyCodes[0], keyCodes[1], keyCodes[2]);
     }
-
-    auto it2 = keyMap.find(strTwo);
-    if (it2 != keyMap.end()) {
-        // If the input exists, retrieve the corresponding value (VK* constant)
-        key2 = it2->second;
-        std::cout << key2 << std::endl;
-
-        // Call your function with the retrieved value as an argument
-    } else {
-        std::cout << "Key not found in the map." << std::endl;
-    }
-
-    auto it3 = keyMap.find(strThree);
-    if (it3 != keyMap.end()) {
-        // If the input exists, retrieve the corresponding value (VK* constant)
-        key3 = it3->second;
-        std::cout << key3 << std::endl;
-
-        // Call your function with the retrieved value as an argument
-    } else {
-        std::cout << "Key not found in the map." << std::endl;
-    }
-
-
-    if (strOne.empty() && strTwo.empty() && strThree.empty()) {
-        std::cerr << "No valid input" << std::endl;
-    } else if (strTwo.empty() && strThree.empty()) {
-        simulateKeyPress(key1);
-    } else if (strThree.empty()) {
-        simulateTwoKeyPresses(key1, key2);
-    } else {
-        simulateThreeKeyPresses(key1, key2, key3);
-    }
-
 }
 
 void releaseAllKeyPresses() {
@@ -244,9 +212,11 @@ int main() {
     char buffer[BUFFER_SIZE];
     DWORD bytesRead;
 
-    pipeHandle = CreateNamedPipe(
-        TEXT(PIPE_NAME),  // Adjust the pipe name as needed
-        PIPE_ACCESS_INBOUND | PIPE_ACCESS_OUTBOUND,  // Bidirectional
+    const wchar_t* pipeName = Config::PipeName;
+
+    pipeHandle = CreateNamedPipeW(
+        pipeName,
+        PIPE_ACCESS_INBOUND | PIPE_ACCESS_OUTBOUND,
         PIPE_TYPE_MESSAGE | PIPE_READMODE_MESSAGE | PIPE_WAIT,
         1,
         0,
@@ -256,9 +226,22 @@ int main() {
     );
 
     if (pipeHandle == INVALID_HANDLE_VALUE) {
-        std::cerr << "Error creating named pipe\n";
+        DWORD error = GetLastError();
+        LPVOID errorMessage;
+        FormatMessageW(
+            FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
+            nullptr,
+            error,
+            0, // Default language
+            reinterpret_cast<LPWSTR>(&errorMessage),
+            0,
+            nullptr
+        );
+        std::wcerr << L"Error creating named pipe: " << errorMessage << L"\n";
+        LocalFree(errorMessage);
         return -1;
     }
+
 
     std::cout << "C++ Server waiting for connection\n";
 
