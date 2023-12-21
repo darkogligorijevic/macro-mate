@@ -7,11 +7,11 @@ import select
 
 load_dotenv()
 PORT = int(os.getenv("PORT"))
-PIPE_CLIENT = str(os.getenv("PIPE_CLIENT"))
+#PIPE_CLIENT = str(os.getenv("PIPE_CLIENT"))
 IP = socket.gethostbyname(socket.gethostname())
 
 def send_command_to_cpp(command):
-    pipe_name = PIPE_CLIENT
+    pipe_name = r'\\.\pipe\MacroMatePipe'
 
     try:
         pipe_handle = win32file.CreateFile(
