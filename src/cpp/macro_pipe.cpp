@@ -9,8 +9,10 @@ int main() {
     char buffer[BUFFER_SIZE];
     DWORD bytesRead;
 
+    // Take pipe name from pipe_name.hpp
     const wchar_t* pipeName = Config::PipeName;
 
+    // Create pipe
     pipeHandle = CreateNamedPipeW(
         pipeName,
         PIPE_ACCESS_INBOUND | PIPE_ACCESS_OUTBOUND,
@@ -22,6 +24,7 @@ int main() {
         nullptr
     );
 
+    // Handling pipe
     if (pipeHandle == INVALID_HANDLE_VALUE) {
         DWORD error = GetLastError();
         LPVOID errorMessage;
@@ -42,6 +45,7 @@ int main() {
 
     std::cout << "C++ Server waiting for connection\n";
 
+    // Connecting with python through pipe where we are fetching command from java and we are executing it
     while (ConnectNamedPipe(pipeHandle, nullptr)) {
         while (ReadFile(pipeHandle, buffer, sizeof(buffer), &bytesRead, nullptr) && bytesRead > 0) {
             buffer[bytesRead] = '\0';
@@ -52,6 +56,7 @@ int main() {
         DisconnectNamedPipe(pipeHandle);
     }
 
+    // Closing pipe
     CloseHandle(pipeHandle);
 
     return 0;

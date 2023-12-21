@@ -5,13 +5,26 @@ import os
 import time
 import select
 
+def read_macros(command):
+    file_path = "user_values.txt"
+    with open(file_path, 'r') as file:
+        content = file.readlines()
+    entries = []
+    for i in range(1, 16):  # Loop through 1 to 15
+        entry = content[i - 1].strip().split(':')[-1] if i <= len(content) else ''  # Extract text or use empty string
+        if entry.startswith("Entry"):
+            entries.append("")
+        else:
+            entries.append(entry)
+    return entries[command]
+
 load_dotenv()
 PORT = int(os.getenv("PORT"))
-#PIPE_CLIENT = str(os.getenv("PIPE_CLIENT"))
+PIPE = str(os.getenv("PIPE_CLIENT")) # r'\\.\pipe\MacroMatePipe'
 IP = socket.gethostbyname(socket.gethostname())
 
 def send_command_to_cpp(command):
-    pipe_name = r'\\.\pipe\MacroMatePipe'
+    pipe_name = PIPE
 
     try:
         pipe_handle = win32file.CreateFile(
@@ -51,7 +64,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
                 time.sleep(0.125)
                 command = command.strip()  # reduces white spaces
                 print(f'Received command from Java: {command}')
-                send_command_to_cpp(command)
+                send_command_to_cpp(read_macros(int(command)))
 
     except KeyboardInterrupt:
         print("CTRL+C detected. Closing the server.")

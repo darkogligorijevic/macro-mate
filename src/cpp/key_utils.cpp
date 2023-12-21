@@ -1,5 +1,6 @@
 #include "key_utils.hpp"
 
+// Simulate one keypress
 void simulateKeyPress(WORD key) {
     INPUT input[2] = {0};
     
@@ -13,6 +14,7 @@ void simulateKeyPress(WORD key) {
     SendInput(2, input, sizeof(INPUT));
 }
 
+// Simulate two keypresses
 void simulateTwoKeyPresses(WORD key1, WORD key2) {
     INPUT input[4] = {0};
 
@@ -33,6 +35,7 @@ void simulateTwoKeyPresses(WORD key1, WORD key2) {
     SendInput(3, input, sizeof(INPUT));
 }
 
+// Simulate three keypresses
 void simulateThreeKeyPresses(WORD key1, WORD key2, WORD key3) {
     INPUT input[6] = {0};
 
@@ -60,13 +63,16 @@ void simulateThreeKeyPresses(WORD key1, WORD key2, WORD key3) {
     SendInput(4, input, sizeof(INPUT));
 }
 
+// Get the value from map
 WORD getVirtualKeyCode(const std::map<std::string, WORD>& keyMap, const std::string& keyString) {
     auto it = keyMap.find(keyString);
     return (it != keyMap.end()) ? it->second : 0;
 }
 
+// Takes the string(command) from java/python and executes the keypress
 void executeKeyPress(const std::string& command) {
     
+    // Map of keypresses (WORDs)
     std::map<std::string, WORD> keyMap = {
         {"CTRL", VK_CONTROL},
         {"SHIFT", VK_SHIFT},
@@ -143,6 +149,7 @@ void executeKeyPress(const std::string& command) {
     std::string token;
     std::vector<std::string> tokens;
 
+    // Divide strings by + sign
     while (std::getline(iss, token, '+')) {
         tokens.push_back(token);
     }
@@ -160,17 +167,19 @@ void executeKeyPress(const std::string& command) {
         }
     }
 
+    // Execute keypresses by the number of substrings divided by +
     if (keyCodes.empty()) {
         std::cout << "No valid input" << std::endl;
     } else if (keyCodes.size() == 1) {
-        simulateKeyPress(keyCodes[0]);
+        simulateKeyPress(keyCodes[0]); // executes one
     } else if (keyCodes.size() == 2) {
-        simulateTwoKeyPresses(keyCodes[0], keyCodes[1]);
+        simulateTwoKeyPresses(keyCodes[0], keyCodes[1]); // executes two
     } else {
-        simulateThreeKeyPresses(keyCodes[0], keyCodes[1], keyCodes[2]);
+        simulateThreeKeyPresses(keyCodes[0], keyCodes[1], keyCodes[2]); // executes three
     }
 }
 
+// Release all keypresses that exist to avoid bugs
 void releaseAllKeyPresses() {
         for (int key = 0; key < 256; ++key) {
         INPUT input;
@@ -181,6 +190,7 @@ void releaseAllKeyPresses() {
     }
 }
 
+// Putting everything in thread
 void processCommand(const std::string& command) {
     std::cout << "Received command: " << command << std::endl;
 
