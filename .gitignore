@@ -1,6 +1,6 @@
 venv/
-*.exe
+dist/
 .vscode/
 .env
-config.ini
 *.png
+*.spec

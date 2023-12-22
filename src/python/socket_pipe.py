@@ -1,9 +1,10 @@
 import socket
-import win32file#, win32pipe
+import win32file
 from dotenv import load_dotenv
 import os
 import time
 import select
+import re
 
 def read_macros(command):
     file_path = "user_values.txt"
@@ -20,7 +21,7 @@ def read_macros(command):
 
 load_dotenv()
 PORT = int(os.getenv("PORT"))
-PIPE = str(os.getenv("PIPE_CLIENT")) # r'\\.\pipe\MacroMatePipe'
+PIPE = str(os.getenv("PIPE_CLIENT")) 
 IP = socket.gethostbyname(socket.gethostname())
 
 def send_command_to_cpp(command):
@@ -52,6 +53,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
     print("Python Server waiting for connections from Java")
 
     client_socket = None
+    pattern = r'^(1[0-5]|[0-9])$'
     try:
         while True:
             readable, _, _ = select.select([server_socket], [], [], 0.1)
@@ -61,10 +63,11 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
 
             if client_socket:
                 command = client_socket.recv(1024).decode('utf-8')
-                time.sleep(0.125)
+                time.sleep(0.06)
                 command = command.strip()  # reduces white spaces
-                print(f'Received command from Java: {command}')
-                send_command_to_cpp(read_macros(int(command)))
+                if re.match(pattern, command):
+                    print(f'Received command from Java: {command}')
+                    send_command_to_cpp(read_macros(int(command)))
 
     except KeyboardInterrupt:
         print("CTRL+C detected. Closing the server.")
