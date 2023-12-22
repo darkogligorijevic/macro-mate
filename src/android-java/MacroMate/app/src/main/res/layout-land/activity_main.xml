@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/btPovezi"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:screenOrientation="landscape"
+    tools:context=".MainActivity">
+
+    <ImageButton
+        android:id="@+id/ibDugme8"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:backgroundTint="#673AB7"
+        android:longClickable="true"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@+id/ibDugme13"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ibDugme3"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageButton
+        android:id="@+id/ibDugme6"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="4dp"
+        android:backgroundTint="#673AB7"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@+id/ibDugme11"
+        app:layout_constraintStart_toEndOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/ibDugme1"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageButton
+        android:id="@+id/ibDugme2"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:backgroundTint="#673AB7"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toStartOf="@+id/ibDugme3"
+        app:layout_constraintStart_toEndOf="@+id/ibDugme1"
+        app:layout_constraintTop_toTopOf="@+id/ibDugme3"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageButton
+        android:id="@+id/ibDugme12"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:backgroundTint="#673AB7"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/ibDugme13"
+        app:layout_constraintEnd_toStartOf="@+id/ibDugme13"
+        app:layout_constraintStart_toEndOf="@+id/ibDugme11"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageButton
+        android:id="@+id/ibDugme11"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:backgroundTint="#673AB7"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/ibDugme13"
+        app:layout_constraintStart_toStartOf="@+id/ibDugme6"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageButton
+        android:id="@+id/ibDugme14"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:backgroundTint="#673AB7"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/ibDugme13"
+        app:layout_constraintEnd_toStartOf="@+id/ibDugme15"
+        app:layout_constraintStart_toEndOf="@+id/ibDugme13"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageButton
+        android:id="@+id/ibDugme15"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:backgroundTint="#673AB7"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/ibDugme13"
+        app:layout_constraintEnd_toStartOf="@+id/textView4"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageButton
+        android:id="@+id/ibDugme5"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:backgroundTint="#673AB7"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toStartOf="@+id/textView4"
+        app:layout_constraintTop_toTopOf="@+id/ibDugme3"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageButton
+        android:id="@+id/ibDugme1"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:backgroundTint="#673AB7"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toStartOf="@+id/ibDugme6"
+        app:layout_constraintTop_toTopOf="@+id/ibDugme3"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageButton
+        android:id="@+id/ibDugme4"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:backgroundTint="#673AB7"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toStartOf="@+id/ibDugme5"
+        app:layout_constraintStart_toEndOf="@+id/ibDugme3"
+        app:layout_constraintTop_toTopOf="@+id/ibDugme3"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageButton
+        android:id="@+id/ibDugme13"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:backgroundTint="#673AB7"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageButton
+        android:id="@+id/ibDugme3"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:backgroundTint="#673AB7"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageButton
+        android:id="@+id/ibDugme7"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:backgroundTint="#673AB7"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@+id/ibDugme12"
+        app:layout_constraintEnd_toStartOf="@+id/ibDugme8"
+        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintStart_toEndOf="@+id/ibDugme6"
+        app:layout_constraintTop_toBottomOf="@+id/ibDugme2"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageButton
+        android:id="@+id/ibDugme9"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:backgroundTint="#673AB7"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@+id/ibDugme14"
+        app:layout_constraintEnd_toStartOf="@+id/ibDugme10"
+        app:layout_constraintStart_toEndOf="@+id/ibDugme8"
+        app:layout_constraintTop_toBottomOf="@+id/ibDugme4"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageButton
+        android:id="@+id/ibDugme10"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:backgroundTint="#673AB7"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@+id/ibDugme15"
+        app:layout_constraintEnd_toStartOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/ibDugme5"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleY="5"
+        android:text=" "
+        android:textSize="48sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="         "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="         "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btPovez"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Connect"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/ibDugme15" />
+
+    <EditText
+        android:id="@+id/etIP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:selectAllOnFocus="true"
+        android:text="IP Address"
+        android:textAlignment="center"
+        android:textColor="#FF673AB7"
+        android:textColorLink="#FF673AB7"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/etPort"
+        app:layout_constraintStart_toEndOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/ibDugme11" />
+
+    <EditText
+        android:id="@+id/etPort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="400px"
+        android:ems="10"
+        android:inputType="text"
+        android:selectAllOnFocus="true"
+        android:text="Port"
+        android:textAlignment="center"
+        android:textColor="#FF673AB7"
+        android:textColorLink="#673AB7"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/ibDugme13"
+        app:layout_constraintStart_toStartOf="@+id/ibDugme12"
+        app:layout_constraintTop_toBottomOf="@+id/ibDugme13" />
+
+    <Button
+        android:id="@+id/btScanQR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onClickQR"
+        android:text="Scan QR"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btPovez"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/ibDugme14" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
