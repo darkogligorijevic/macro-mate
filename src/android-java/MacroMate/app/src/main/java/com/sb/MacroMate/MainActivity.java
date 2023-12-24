@@ -431,10 +431,6 @@ public class MainActivity extends AppCompatActivity {
                     s = new Socket(etIP.getText().toString(), port);
                     streamReader = new InputStreamReader(s.getInputStream());
                     out = new PrintWriter(s.getOutputStream(),true);
-
-
-
-
                     //TESTIRANJE
                     ibDugme1.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
@@ -528,30 +524,11 @@ public class MainActivity extends AppCompatActivity {
 
                 } catch (UnknownHostException e) {
                     System.err.println("Unknown Host.");
-
-                    etIP.setVisibility(View.VISIBLE);
-                    etPort.setVisibility(View.VISIBLE);
-                    btScanQR.setVisibility(View.VISIBLE);
-                    btPovezi.setVisibility(View.VISIBLE);
-
                     // System.exit(1);
-                } catch(java.net.SocketTimeoutException e){
-
-                    etIP.setVisibility(View.VISIBLE);
-                    etPort.setVisibility(View.VISIBLE);
-                    btScanQR.setVisibility(View.VISIBLE);
-                    btPovezi.setVisibility(View.VISIBLE);
-
                 } catch (IOException e) {
                     System.err.println("Couldn't get I/O for "
                             + "the connection.");
                     System.err.println(e);
-
-                    etIP.setVisibility(View.VISIBLE);
-                    etPort.setVisibility(View.VISIBLE);
-                    btScanQR.setVisibility(View.VISIBLE);
-                    btPovezi.setVisibility(View.VISIBLE);
-
                     //  System.exit(1);
                 }
             }
